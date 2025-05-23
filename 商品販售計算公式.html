@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>商城道具價值轉換工具(單位:萬 楓幣)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 10px;
+    }
+    input {
+      width: 100px;
+      padding: 5px;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">商城道具價值轉換工具(單位:萬 楓幣)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>背包</th>
+        <th>寵物</th>
+        <th>護身符</th>
+        <th>高級傳送石</th>
+        <th>雪花</th>
+        <th>廣</th>
+        <th>大廣</th>
+        <th>SP重置</th>
+        <th>AP重置</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="number" id="backpack" oninput="convert('backpack')"></td>
+        <td><input type="number" id="pet" oninput="convert('pet')"></td>
+        <td><input type="number" id="amulet" oninput="convert('amulet')"></td>
+        <td><input type="number" id="teleport" oninput="convert('teleport')"></td>
+        <td><input type="number" id="snow" oninput="convert('snow')"></td>
+        <td><input type="number" id="ad" oninput="convert('ad')"></td>
+        <td><input type="number" id="bigad" oninput="convert('bigad')"></td>
+        <td><input type="number" id="spreset" oninput="convert('spreset')"></td>
+        <td><input type="number" id="apreset" oninput="convert('apreset')"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    const ratios = {
+      backpack: 250,
+      pet: 1600,
+      amulet: 40.91,
+      teleport: 36.37,
+      snow: 27.28,
+      ad: 120,
+      bigad: 140,
+      spreset: 350,
+      apreset: 450
+    };
+
+    let isUpdating = false;
+
+    function convert(source) {
+      if (isUpdating) return;
+      isUpdating = true;
+
+      const sourceValue = parseFloat(document.getElementById(source).value);
+      if (isNaN(sourceValue)) {
+        isUpdating = false;
+        return;
+      }
+
+      const baseValue = sourceValue / ratios[source];
+
+      for (const [key, ratio] of Object.entries(ratios)) {
+        if (key !== source) {
+          document.getElementById(key).value = (baseValue * ratio).toFixed(2);
+        }
+      }
+
+      isUpdating = false;
+    }
+  </script>
+</body>
+</html>
